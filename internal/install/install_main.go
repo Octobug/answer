@@ -41,7 +41,11 @@ func Run(configPath string) {
 	}
 
 	// try to install by env
-	if installByEnv, err := TryToInstallByEnv(); installByEnv && err != nil {
+	if installByEnv, err := TryToInstallByEnv(); installByEnv {
+		if err == nil {
+			fmt.Println("[auto-install] init by env successfully")
+			return
+		}
 		fmt.Printf("[auto-install] try to init by env fail: %v\n", err)
 	}
 
