@@ -290,6 +290,8 @@ backend:
     config:
       read_config_failed:
         other: Read config failed
+      write_config_failed:
+        other: Write config failed
     database:
       connection_failed:
         other: Database connection failed
@@ -301,6 +303,8 @@ backend:
     upload:
       unsupported_file_format:
         other: Unsupported file format.
+      use_absolute_url_invalid:
+        other: UPLOAD_USE_ABSOLUTE_URL must be one of [true false].
     site_info:
       config_not_found:
         other: Site config not found.

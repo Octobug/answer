@@ -96,14 +96,23 @@ type InitEnvironmentResp struct {
 
 // InitBaseInfoReq init base info request
 type InitBaseInfoReq struct {
-	Language      string `validate:"required,gt=0,lte=30" json:"lang"`
-	SiteName      string `validate:"required,sanitizer,gt=0,lte=30" json:"site_name"`
-	SiteURL       string `validate:"required,gt=0,lte=512,url" json:"site_url"`
-	ContactEmail  string `validate:"required,email,gt=0,lte=500" json:"contact_email"`
-	AdminName     string `validate:"required,gt=3,lte=30" json:"name"`
-	AdminPassword string `validate:"required,gte=8,lte=32" json:"password"`
-	AdminEmail    string `validate:"required,email,gt=0,lte=500" json:"email"`
-	LoginRequired bool   `json:"login_required"`
+	Language             string `validate:"required,gt=0,lte=30" json:"lang"`
+	SiteName             string `validate:"required,sanitizer,gt=0,lte=30" json:"site_name"`
+	SiteURL              string `validate:"required,gt=0,lte=512,url" json:"site_url"`
+	ContactEmail         string `validate:"required,email,gt=0,lte=500" json:"contact_email"`
+	AdminName            string `validate:"required,gt=3,lte=30" json:"name"`
+	AdminPassword        string `validate:"required,gte=8,lte=32" json:"password"`
+	AdminEmail           string `validate:"required,email,gt=0,lte=500" json:"email"`
+	LoginRequired        bool   `json:"login_required"`
+	UploadUseAbsoluteUrl string `validate:"omitempty,oneof=true false" json:"upload_use_absolute_url"`
+}
+
+func (r *InitBaseInfoReq) Message(tag, defaultMsg string) string {
+	switch tag {
+	case "upload_use_absolute_url":
+		return reason.UploadUseAbsoluteUrlInvalid
+	}
+	return defaultMsg
 }
 
 func (r *InitBaseInfoReq) Check() (errFields []*validator.FormErrorField, err error) {

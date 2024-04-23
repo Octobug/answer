@@ -169,7 +169,7 @@ func InitEnvironment(ctx *gin.Context) {
 
 	if err := conf.RewriteConfig(confPath, c); err != nil {
 		log.Errorf("rewrite config failed %s", err)
-		handler.HandleResponse(ctx, errors.BadRequest(reason.ReadConfigFailed), nil)
+		handler.HandleResponse(ctx, errors.BadRequest(reason.WriteConfigFailed), nil)
 		return
 	}
 	handler.HandleResponse(ctx, nil, nil)
@@ -215,6 +215,17 @@ func InitBaseInfo(ctx *gin.Context) {
 	if err := migrations.NewMentor(ctx, engine, inputData).InitDB(); err != nil {
 		log.Error("init database error: ", err.Error())
 		handler.HandleResponse(ctx, errors.BadRequest(reason.InstallConfigFailed), schema.ErrTypeAlert)
+		return
+	}
+
+	if req.UploadUseAbsoluteUrl == "" {
+		c.ServiceConfig.UploadUseAbsoluteUrl = cli.DefaultUploadUseAbsoluteUrl
+	} else {
+		c.ServiceConfig.UploadUseAbsoluteUrl = req.UploadUseAbsoluteUrl == "true"
+	}
+	if err := conf.RewriteConfig(confPath, c); err != nil {
+		log.Errorf("rewrite config failed %s", err)
+		handler.HandleResponse(ctx, errors.BadRequest(reason.WriteConfigFailed), nil)
 		return
 	}
 

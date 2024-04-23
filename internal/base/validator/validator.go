@@ -215,6 +215,7 @@ func (m *MyValidator) Check(value interface{}) (errFields []*FormErrorField, err
 			return nil, errors.New("validate check exception")
 		}
 
+		mft, mftOK := value.(MsgForTag)
 		for _, fieldError := range valErrors {
 			errField := &FormErrorField{
 				ErrorField: fieldError.Field(),
@@ -228,6 +229,12 @@ func (m *MyValidator) Check(value interface{}) (errFields []*FormErrorField, err
 				originalTag := getObjectTagByFieldName(value, fieldName)
 				if len(originalTag) > 0 {
 					errField.ErrorField = originalTag
+				}
+
+				if mftOK {
+					// replace default validator msg
+					replacedMsg := mft.Message(originalTag, errField.ErrorMsg)
+					errField.ErrorMsg = translator.Tr(m.Lang, replacedMsg)
 				}
 			}
 			errFields = append(errFields, errField)
@@ -254,6 +261,10 @@ func (m *MyValidator) Check(value interface{}) (errFields []*FormErrorField, err
 		return errFields, myErrors.BadRequest(reason.RequestFormatError).WithMsg(errMsg)
 	}
 	return nil, nil
+}
+
+type MsgForTag interface {
+	Message(tag, defaultMsg string) string
 }
 
 // Checker .

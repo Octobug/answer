@@ -6814,6 +6814,13 @@ const docTemplate = `{
                 "site_url": {
                     "type": "string",
                     "maxLength": 512
+                },
+                "upload_use_absolute_url": {
+                    "type": "string",
+                    "enum": [
+                        "true",
+                        "false"
+                    ]
                 }
             }
         },

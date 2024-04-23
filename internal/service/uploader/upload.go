@@ -227,6 +227,17 @@ func (us *uploaderService) UploadBrandingFile(ctx *gin.Context) (
 	return us.uploadFile(ctx, fileHeader, avatarFilePath)
 }
 
+func (us *uploaderService) getUploadUrl(siteUrl, fileSubPath string) string {
+	fileRelPath := filepath.Join("uploads", fileSubPath)
+	useAbsoluteUrl := us.serviceConfig.UploadUseAbsoluteUrl
+
+	if useAbsoluteUrl {
+		return fmt.Sprintf("%s/%s", siteUrl, fileRelPath)
+	} else {
+		return filepath.Join("/", fileRelPath)
+	}
+}
+
 func (us *uploaderService) uploadFile(ctx *gin.Context, file *multipart.FileHeader, fileSubPath string) (
 	url string, err error) {
 	siteGeneral, err := us.siteInfoService.GetSiteGeneral(ctx)
@@ -252,7 +263,7 @@ func (us *uploaderService) uploadFile(ctx *gin.Context, file *multipart.FileHead
 		log.Error(err)
 	}
 
-	url = fmt.Sprintf("%s/uploads/%s", siteGeneral.SiteUrl, fileSubPath)
+	url = us.getUploadUrl(siteGeneral.SiteUrl, fileSubPath)
 	return url, nil
 }
 

@@ -34,6 +34,7 @@ const (
 	DefaultConfigFileName                  = "config.yaml"
 	DefaultCacheFileName                   = "cache.db"
 	DefaultReservedUsernamesConfigFileName = "reserved-usernames.json"
+	DefaultUploadUseAbsoluteUrl            = false
 )
 
 var (

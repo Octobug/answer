@@ -20,5 +20,6 @@
 package service_config
 
 type ServiceConfig struct {
-	UploadPath string `json:"upload_path" mapstructure:"upload_path" yaml:"upload_path"`
+	UploadPath           string `json:"upload_path" mapstructure:"upload_path" yaml:"upload_path"`
+	UploadUseAbsoluteUrl bool   `json:"upload_use_absolute_url" mapstructure:"upload_use_absolute_url" yaml:"upload_use_absolute_url"`
 }
